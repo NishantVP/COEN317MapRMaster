@@ -14,6 +14,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
+
+import module.files.Chunk;
 
 /**
  * @author nishant
@@ -26,10 +29,24 @@ public class ClientMapperThread implements Runnable {
 	
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
-	private int StoCPort=50000;
+	private int StoCPort;
+	
+	private List<Chunk> allFileChunksList;
+	private List<Chunk> sentFileChunksList;
+	private List<Chunk> processedFileChunksList;
+	
+	private Chunk chunkMetaData;
 	
 	private String chunkToRead = "/home/nishant/Desktop/COEN317/chunksebook/1.txt";
 	
+	public ClientMapperThread(int port,Chunk chunk,List<Chunk> all,List<Chunk> sent,List<Chunk> processed) {
+		this.StoCPort = port;
+		this.chunkMetaData = chunk;
+		this.allFileChunksList = all;
+		this.sentFileChunksList = sent;
+		this.processedFileChunksList = processed;
+		this.chunkToRead = chunkMetaData.getChunkFilePathName();
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
@@ -105,7 +122,7 @@ public class ClientMapperThread implements Runnable {
 				  {
 				    if((receiveMessage = receiveRead.readLine()) != null)  
 				    {
-				       System.out.println("Current Count: " +receiveMessage);  
+				       System.out.println("Map output from Mobile: " +receiveMessage);  
 				       //long countInThisFile = processReceivedResult(receiveMessage);
 				       //System.out.println("Total Count so far: " +countInThisFile);
 				    }         

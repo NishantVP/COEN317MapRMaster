@@ -44,7 +44,7 @@ public class NewConnectionListenerThread implements Runnable {
 	private int StoCPort = 50000; //Server to Client data exchange port //Always Even
 	private int CtoSPort = 50001; //Client to Server data exchange port //Always Odd
 	
-	
+	private int chunkNoToSend = 0;
 	
 	public NewConnectionListenerThread (List<Chunk> all,List<Chunk> sent,List<Chunk> processed) {
 		this.allFileChunksList = all;
@@ -70,6 +70,9 @@ public class NewConnectionListenerThread implements Runnable {
 		
 		ServerIP = getFilterIPAddresses();
 		
+		//System.out.println("List Testing: " +allFileChunksList.get(0).getChunkFilePathName());
+		
+		
 		try {
 			saveServerIPToCloud();
 		} catch (IOException e) {
@@ -91,7 +94,7 @@ public class NewConnectionListenerThread implements Runnable {
 		  
 		  try {
 			  while (true) {
-			      System.out.println("Waiting for New mobile");
+			      //System.out.println("Waiting for New mobile");
 	
 			      SocketChannel sc;
 				
@@ -110,11 +113,24 @@ public class NewConnectionListenerThread implements Runnable {
 			        System.out.println("Incoming connection from: " + sc.socket().getRemoteSocketAddress());
 			        
 			        String PortNumberToSend = Integer.toString(StoCPort);
-			        buffer = ByteBuffer.wrap(PortNumberToSend.getBytes());
+			        
+			        String workerFunction = "map"; //decideMapperOrReducer();
+
+			        String DataForNewWorker = PortNumberToSend + "," +workerFunction;
+			        
+			        buffer = ByteBuffer.wrap(DataForNewWorker.getBytes());
 			        
 			        //new ClientThread("ClientThread",pathOfChunks,clientPortNumber,chunkNumber2,GlobalCount).start();
 			        //System.out.println("started");
 			        
+			        new ClientMapperThread(StoCPort,
+			        		allFileChunksList.get(chunkNoToSend),
+			        		allFileChunksList,
+			        		sentFileChunksList,
+			        		processedFileChunksList).start();
+			        
+			        
+			        chunkNoToSend++;
 			        CtoSPort = CtoSPort + 2;
 			        StoCPort = StoCPort + 2;
 			        
