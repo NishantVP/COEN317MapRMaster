@@ -23,30 +23,24 @@ import module.testing.ShufflerJob;
  * @author nishant
  *
  */
-public class ClientMapperThread implements Runnable {
+public class ClientReducerThread implements Runnable {
 	
 	private Thread t;
-	private String threadName = "Client Mapper Thread";
+	private String threadName = "Client Reducer Thread";
 	
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 	private int StoCPort;
 	
-	private List<Chunk> allFileChunksList;
-	private List<Chunk> sentFileChunksList;
-	private List<Chunk> processedFileChunksList;
+	private String MapOutPut;
 	
-	private Chunk chunkMetaData;
 	
 	private String chunkToRead = "/home/nishant/Desktop/COEN317/chunksebook/1.txt";
 	
-	public ClientMapperThread(int port,Chunk chunk,List<Chunk> all,List<Chunk> sent,List<Chunk> processed) {
+	public ClientReducerThread(int port,String mapop) {
 		this.StoCPort = port;
-		this.chunkMetaData = chunk;
-		this.allFileChunksList = all;
-		this.sentFileChunksList = sent;
-		this.processedFileChunksList = processed;
-		this.chunkToRead = chunkMetaData.getChunkFilePathName();
+		this.MapOutPut = mapop;
+		
 	}
 
 	/* (non-Javadoc)
@@ -97,8 +91,8 @@ public class ClientMapperThread implements Runnable {
 				// The name of the file to open.
 			     //String fileName = this.fileName;//"/home/nishant/Documents/OSfilesendTest.txt";
 			     String line2 = null;
-				  
-				  // FileReader reads text files in the default encoding.
+			     String line3 = "---fileSendingFinishedByServer---";
+				  /*// FileReader reads text files in the default encoding.
 		            FileReader fileReader = 
 		                new FileReader(chunkToRead);
 
@@ -106,7 +100,7 @@ public class ClientMapperThread implements Runnable {
 		            BufferedReader bufferedReader = 
 		                new BufferedReader(fileReader);
 		            
-		            String line3 = "---fileSendingFinishedByServer---";
+		            
 		            System.out.println("file being sent - " +chunkToRead); 
 		            while((line2 = bufferedReader.readLine()) != null) {
 					  //line3 = line3 + line2;
@@ -115,7 +109,9 @@ public class ClientMapperThread implements Runnable {
 					  //System.out.println(line2);
 		            } 	
 		            // Always close files.
-		            bufferedReader.close();  
+		            bufferedReader.close(); */ 
+			     	pwrite.println(MapOutPut);             
+			     	pwrite.flush();
 		            pwrite.println(line3);             
 					pwrite.flush();
 				  
@@ -123,7 +119,7 @@ public class ClientMapperThread implements Runnable {
 				  {
 				    if((receiveMessage = receiveRead.readLine()) != null)  
 				    {
-				       System.out.println("Map output from Mobile: " +receiveMessage);
+				       System.out.println("Reduce output from Mobile: " +receiveMessage);
 				       ShufflerJob.combineStreams(receiveMessage);
 				       //long countInThisFile = processReceivedResult(receiveMessage);
 				       //System.out.println("Total Count so far: " +countInThisFile);

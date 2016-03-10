@@ -6,6 +6,9 @@
 package module.communication;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -19,6 +22,8 @@ import java.util.Enumeration;
 import java.util.List;
 
 import module.files.Chunk;
+import module.testing.ReducerJob;
+import module.testing.ShufflerJob;
 
 /**
  * @author nishant
@@ -111,10 +116,32 @@ public class NewConnectionListenerThread implements Runnable {
 			      } 
 			      else {
 			        System.out.println("Incoming connection from: " + sc.socket().getRemoteSocketAddress());
+			        String FifthReducerOP = "";
+			        String FifthResultPath = "/home/nishant/Desktop/COEN317/FinalOutput/";
+			        String workerFunction;
+			        
+			        if(chunkNoToSend == 5) {
+			        	FifthReducerOP = ReducerJob.reduceAndroid(ShufflerJob.getShufflerOutput());
+			        	writeLineToFile(FifthReducerOP,FifthResultPath,1);
+			        	 new ClientReducerThread(StoCPort,ShufflerJob.getShufflerOutput()).start();;
+			        	  workerFunction = "reduce"; //decideMapperOrReducer();
+			        }
+			        else {
+			        	  workerFunction = "map"; //decideMapperOrReducer();
+			        	  new ClientMapperThread(StoCPort,
+					        		allFileChunksList.get(chunkNoToSend),
+					        		allFileChunksList,
+					        		sentFileChunksList,
+					        		processedFileChunksList).start();
+					        
+					        
+					        chunkNoToSend++;
+					        
+			        }
 			        
 			        String PortNumberToSend = Integer.toString(StoCPort);
 			        
-			        String workerFunction = "map"; //decideMapperOrReducer();
+			       
 
 			        String DataForNewWorker = PortNumberToSend + "," +workerFunction;
 			        
@@ -123,14 +150,12 @@ public class NewConnectionListenerThread implements Runnable {
 			        //new ClientThread("ClientThread",pathOfChunks,clientPortNumber,chunkNumber2,GlobalCount).start();
 			        //System.out.println("started");
 			        
-			        new ClientMapperThread(StoCPort,
-			        		allFileChunksList.get(chunkNoToSend),
-			        		allFileChunksList,
-			        		sentFileChunksList,
-			        		processedFileChunksList).start();
+			       
+			       
+			       
 			        
 			        
-			        chunkNoToSend++;
+			        
 			        CtoSPort = CtoSPort + 2;
 			        StoCPort = StoCPort + 2;
 			        
@@ -188,6 +213,37 @@ public class NewConnectionListenerThread implements Runnable {
 		  }
 		return myIP;
 	}
+	
+		private static void writeLineToFile(String line, String path, int chunkNumber) {
+		
+		String chunkNumberString = Integer.toString(chunkNumber);
+		// The name of the file to open.
+        String fileName = path +chunkNumberString +".txt";
+        File file = new File(fileName);
+		try {
+            // Assume default encoding.
+            FileWriter fileWriter = new FileWriter(file);
+
+            // Always wrap FileWriter in BufferedWriter.
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            
+            // Note that write() does not automatically
+            // append a newline character.
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
+            // Always close files.
+            bufferedWriter.close();
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error writing to file '"
+                + fileName + "'");
+            // Or we could just do this:
+            // ex.printStackTrace();
+        }
+		
+	}
+
 	
 	  
 	private static void saveServerIPToCloud() throws IOException {
