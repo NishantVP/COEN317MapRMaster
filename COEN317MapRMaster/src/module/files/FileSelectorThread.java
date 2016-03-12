@@ -85,7 +85,7 @@ public class FileSelectorThread implements Runnable {
 	private void splitFile(){
 		int countLines = 0;
 		String line = null;
-		int chunkNumer = 0;
+		int chunkNumber = 0;
 		String chunkfileContent = "";
 		String chunkFileName ;
 		
@@ -102,7 +102,7 @@ public class FileSelectorThread implements Runnable {
 			
 			while((line = bufferedReader.readLine()) != null) {
 				countLines++;
-				chunkNumer = countLines/NUMBER_OF_LINES_PER_CHUNK;
+				chunkNumber = countLines/NUMBER_OF_LINES_PER_CHUNK;
 				
 				File theDir = new File(chunkPath);
             	// if the directory does not exist, create it
@@ -126,17 +126,18 @@ public class FileSelectorThread implements Runnable {
             	
             	if(countLines%NUMBER_OF_LINES_PER_CHUNK == 0) {
             		
-            		writeLineToFile(chunkfileContent,chunkPath,chunkNumer);
+            		writeLineToFile(chunkfileContent,chunkPath,chunkNumber);
             		chunkfileContent = "";
             		//i++;
-            		chunkFileName = chunkPath +chunkNumer +".txt";
+            		chunkFileName = chunkPath +chunkNumber +".txt";
             		//Add newly created chunk to the list
-            		allFileChunksList.add(new Chunk(chunkFileName,chunkNumer));
+            		allFileChunksList.add(new Chunk(chunkFileName,chunkNumber));
             	}
 			}
-			writeLineToFile(chunkfileContent,chunkPath,chunkNumer);
-			chunkFileName = chunkPath +chunkNumer +".txt";
-			allFileChunksList.add(new Chunk(chunkFileName,chunkNumer));
+			chunkNumber ++;
+			writeLineToFile(chunkfileContent,chunkPath,chunkNumber);
+			chunkFileName = chunkPath +chunkNumber +".txt";
+			allFileChunksList.add(new Chunk(chunkFileName,chunkNumber));
             // Always close files.
             bufferedReader.close();     
 			
