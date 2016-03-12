@@ -133,7 +133,7 @@ public class ClientMapperThread implements Runnable {
 				    }
 				   
 				  }
-				  System.out.println("Out of while loop");  
+				  //System.out.println("Out of while loop");  
 				  
 				  
 			

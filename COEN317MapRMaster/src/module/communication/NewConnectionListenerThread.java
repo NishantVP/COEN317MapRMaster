@@ -121,10 +121,10 @@ public class NewConnectionListenerThread implements Runnable {
 			        String workerFunction;
 			        
 			        if(chunkNoToSend == 5) {
-			        	FifthReducerOP = ReducerJob.reduceAndroid(ShufflerJob.getShufflerOutput());
-			        	writeLineToFile(FifthReducerOP,FifthResultPath,1);
+			        	//FifthReducerOP = ReducerJob.reduceAndroid(ShufflerJob.getShufflerOutput());
+			        	//writeLineToFile(FifthReducerOP,FifthResultPath,1);
 			        	 new ClientReducerThread(StoCPort,ShufflerJob.getShufflerOutput()).start();;
-			        	  workerFunction = "reduce"; //decideMapperOrReducer();
+			        	 workerFunction = "reduce"; //decideMapperOrReducer();
 			        }
 			        else {
 			        	  workerFunction = "map"; //decideMapperOrReducer();

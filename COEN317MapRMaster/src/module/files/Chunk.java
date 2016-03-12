@@ -20,7 +20,6 @@ public class Chunk {
 		this.chunkNumber = number;
 	}
 	
-	
 	public int getChunkNumber() {
 		return chunkNumber;
 	}
