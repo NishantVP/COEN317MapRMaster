@@ -120,10 +120,18 @@ public class NewConnectionListenerThread implements Runnable {
 			        String FifthResultPath = "/home/nishant/Desktop/COEN317/FinalOutput/";
 			        String workerFunction;
 			        
-			        if(chunkNoToSend == 5) {
+			        System.out.println("Total Chunks: " +allFileChunksList.size());
+			        System.out.println("Sent Chunks: " +sentFileChunksList.size());
+			        System.out.println("Processed Chunks: " +processedFileChunksList.size());
+			        
+			        /*if(chunkNoToSend == 5) {
 			        	//FifthReducerOP = ReducerJob.reduceAndroid(ShufflerJob.getShufflerOutput());
 			        	//writeLineToFile(FifthReducerOP,FifthResultPath,1);
-			        	 new ClientReducerThread(StoCPort,ShufflerJob.getShufflerOutput()).start();;
+			        	 new ClientReducerThread(StoCPort,ShufflerJob.getShufflerOutput()).start();
+			        	 workerFunction = "reduce"; //decideMapperOrReducer();
+			        }*/
+			        if(processedFileChunksList.size() == allFileChunksList.size()) {
+			        	 new ClientReducerThread(StoCPort,ShufflerJob.getShufflerOutput()).start();
 			        	 workerFunction = "reduce"; //decideMapperOrReducer();
 			        }
 			        else {
@@ -140,21 +148,10 @@ public class NewConnectionListenerThread implements Runnable {
 			        }
 			        
 			        String PortNumberToSend = Integer.toString(StoCPort);
-			        
-			       
 
 			        String DataForNewWorker = PortNumberToSend + "," +workerFunction;
 			        
 			        buffer = ByteBuffer.wrap(DataForNewWorker.getBytes());
-			        
-			        //new ClientThread("ClientThread",pathOfChunks,clientPortNumber,chunkNumber2,GlobalCount).start();
-			        //System.out.println("started");
-			        
-			       
-			       
-			       
-			        
-			        
 			        
 			        CtoSPort = CtoSPort + 2;
 			        StoCPort = StoCPort + 2;
@@ -176,19 +173,15 @@ public class NewConnectionListenerThread implements Runnable {
 			}
 	  
 		
-		
-		
 	}
 	
 	//Filter IP address
 	public static String getFilterIPAddresses() {
 		String myIP = null;
-		Enumeration<?> e;
-		
+		Enumeration<?> e;		
 		try {
 			
 			e = NetworkInterface.getNetworkInterfaces();
-			
 			//for each IP address check for the valid IP address
 			while(e.hasMoreElements()) {
 				NetworkInterface n = (NetworkInterface) e.nextElement();

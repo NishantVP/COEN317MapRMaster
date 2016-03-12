@@ -33,6 +33,8 @@ public class FileSelectorThread implements Runnable {
 	private List<Chunk> allFileChunksList;
 	private List<Chunk> sentFileChunksList;
 	private List<Chunk> processedFileChunksList;
+	
+	private static final int NUMBER_OF_LINES_PER_CHUNK = 30;
 	// = new ArrayList<Chunk>();
 	
 	
@@ -120,7 +122,7 @@ public class FileSelectorThread implements Runnable {
             	}
             	chunkfileContent = chunkfileContent +"\n"+ line;
             	
-            	if(countLines%20 == 0) {
+            	if(countLines%NUMBER_OF_LINES_PER_CHUNK == 0) {
             		
             		writeLineToFile(chunkfileContent,chunkPath,chunkNumer);
             		chunkfileContent = "";

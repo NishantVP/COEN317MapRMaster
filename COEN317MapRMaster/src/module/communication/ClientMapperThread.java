@@ -36,6 +36,8 @@ public class ClientMapperThread implements Runnable {
 	private List<Chunk> sentFileChunksList;
 	private List<Chunk> processedFileChunksList;
 	
+	private long currentChunkNumber;
+	
 	private Chunk chunkMetaData;
 	
 	private String chunkToRead = "/home/nishant/Desktop/COEN317/chunksebook/1.txt";
@@ -118,15 +120,15 @@ public class ClientMapperThread implements Runnable {
 		            bufferedReader.close();  
 		            pwrite.println(line3);             
 					pwrite.flush();
-				  
+					addChunkToSentList();
+					
 				  while(true)
 				  {
 				    if((receiveMessage = receiveRead.readLine()) != null)  
 				    {
 				       System.out.println("Map output from Mobile: " +receiveMessage);
 				       ShufflerJob.combineStreams(receiveMessage);
-				       //long countInThisFile = processReceivedResult(receiveMessage);
-				       //System.out.println("Total Count so far: " +countInThisFile);
+				       addChunkToProcessedList();
 				    }
 				    else {
 				    	break;
@@ -134,8 +136,6 @@ public class ClientMapperThread implements Runnable {
 				   
 				  }
 				  //System.out.println("Out of while loop");  
-				  
-				  
 			
 	        } catch (IOException ex) {
 	            System.out.println("Problem in message reading");
@@ -143,6 +143,17 @@ public class ClientMapperThread implements Runnable {
 	        
 	    }
 
+	}
+	
+	private synchronized void addChunkToSentList() {
+		
+		sentFileChunksList.add(chunkMetaData);
+		
+	}
+	
+	private synchronized void addChunkToProcessedList() {
+		
+		processedFileChunksList.add(chunkMetaData);
 	}
 
 }
