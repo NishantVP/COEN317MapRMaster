@@ -1,14 +1,6 @@
-/**
- * COEN 317 Distributed Computing (Winter 2016)
- * Final Project: MapReduce with Android Workers
- * Nishant Phatangare, Sneha Shirsat
- */
-package module.testing;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+package module.sneha.testing;
+import java.util.*;
+
 public class ShufflerJob {
 
 	
@@ -17,21 +9,20 @@ public class ShufflerJob {
 	private static List<MyPair> listPair;
 	
 	private static StringBuilder shufflerSortedOutput;
-//	private static StringBuilder mapSoFar = new StringBuilder();
+	private static StringBuilder mapSoFar = new StringBuilder();
 
 	public static void combineStreams(String addStr){
 		
 		listPair = new ArrayList<MyPair>();
 		shufflerSortedOutput = new StringBuilder();
+		mapSoFar.append(addStr);
 		map = new HashMap<String,Integer>();
-		String[] buffer = addStr.toString().split(",");
-		//System.out.println("Buffer: " +buffer[0]);
-		//System.out.println("BufferLength: " +buffer.length);
-		String[]keyVal;
-		for(int i=0;i<buffer.length-1;i++){
+		String[] buffer = mapSoFar.toString().split(",");
+		
+		String[]keyVal = null;
+		for(int i=0;i<buffer.length;i++){
 			keyVal = buffer[i].split("=");
-			//System.out.println("key0 = "+keyVal[0]);
-			//System.out.println("i = "+i);
+			
 			listPair.add(new MyPair(keyVal[0], Integer.parseInt(keyVal[1])));
 			
 			
@@ -59,12 +50,16 @@ public class ShufflerJob {
 			
 		});
 		
+		
 		for(int i=0;i<listPair.size();i++){
 			shufflerSortedOutput.append(listPair.get(i).getKey()+"="+listPair.get(i).getInteger()+",");
 		}
+		
+		System.out.println(shufflerSortedOutput.toString());
 	}
 
 	public static String getShufflerOutput(){
 		return shufflerSortedOutput.toString();
 	}
 }
+

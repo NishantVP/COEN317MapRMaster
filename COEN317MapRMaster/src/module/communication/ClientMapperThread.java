@@ -17,7 +17,7 @@ import java.net.Socket;
 import java.util.List;
 
 import module.files.Chunk;
-import module.testing.ShufflerJob;
+import module.sneha.testing.ShufflerJob;
 
 /**
  * @author nishant
@@ -129,6 +129,7 @@ public class ClientMapperThread implements Runnable {
 				       if(!chunkMetaData.isProcessed()){
 				    	   ShufflerJob.combineStreams(receiveMessage);
 				    	   System.out.println("Map output from Mobile: " +receiveMessage);
+				    	   System.out.println("Output from Shuffler:" +ShufflerJob.getShufflerOutput());
 				       }
 				       else {
 				    	   System.out.println("Some other Mapper already processed this chunk");

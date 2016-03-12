@@ -22,8 +22,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import module.files.Chunk;
-import module.testing.ReducerJob;
-import module.testing.ShufflerJob;
+import module.sneha.testing.ShufflerJob;
 
 /**
  * @author nishant

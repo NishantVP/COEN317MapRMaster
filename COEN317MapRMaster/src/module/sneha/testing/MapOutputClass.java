@@ -1,14 +1,5 @@
-/**
- * COEN 317 Distributed Computing (Winter 2016)
- * Final Project: MapReduce with Android Workers
- * Nishant Phatangare, Sneha Shirsat
- */
-package module.testing;
+package module.sneha.testing;
 
-/**
- * @author nishant
- *
- */
 public class MapOutputClass {
 
 	private String str;

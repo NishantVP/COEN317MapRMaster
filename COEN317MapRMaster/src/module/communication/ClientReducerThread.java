@@ -17,7 +17,6 @@ import java.net.Socket;
 import java.util.List;
 
 import module.files.Chunk;
-import module.testing.ShufflerJob;
 
 /**
  * @author nishant
@@ -92,24 +91,7 @@ public class ClientReducerThread implements Runnable {
 			     //String fileName = this.fileName;//"/home/nishant/Documents/OSfilesendTest.txt";
 			     String line2 = null;
 			     String line3 = "---fileSendingFinishedByServer---";
-				  /*// FileReader reads text files in the default encoding.
-		            FileReader fileReader = 
-		                new FileReader(chunkToRead);
-
-		            // Always wrap FileReader in BufferedReader.
-		            BufferedReader bufferedReader = 
-		                new BufferedReader(fileReader);
-		            
-		            
-		            System.out.println("file being sent - " +chunkToRead); 
-		            while((line2 = bufferedReader.readLine()) != null) {
-					  //line3 = line3 + line2;
-					  pwrite.println(line2);             
-					  pwrite.flush();
-					  //System.out.println(line2);
-		            } 	
-		            // Always close files.
-		            bufferedReader.close(); */ 
+			 
 			     	pwrite.println(MapOutPut);             
 			     	pwrite.flush();
 		            pwrite.println(line3);             
@@ -120,7 +102,7 @@ public class ClientReducerThread implements Runnable {
 				    if((receiveMessage = receiveRead.readLine()) != null)  
 				    {
 				       System.out.println("Reduce output from Mobile: " +receiveMessage);
-				       ShufflerJob.combineStreams(receiveMessage);
+				       
 				       //long countInThisFile = processReceivedResult(receiveMessage);
 				       //System.out.println("Total Count so far: " +countInThisFile);
 				    }
