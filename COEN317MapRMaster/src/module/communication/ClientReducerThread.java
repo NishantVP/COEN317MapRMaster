@@ -17,6 +17,7 @@ import java.net.Socket;
 import java.util.List;
 
 import module.files.Chunk;
+import module.files.FileWritter;
 
 /**
  * @author nishant
@@ -102,9 +103,7 @@ public class ClientReducerThread implements Runnable {
 				    if((receiveMessage = receiveRead.readLine()) != null)  
 				    {
 				       System.out.println("Reduce output from Mobile: " +receiveMessage);
-				       
-				       //long countInThisFile = processReceivedResult(receiveMessage);
-				       //System.out.println("Total Count so far: " +countInThisFile);
+				       FileWritter.appendReducerOutput(receiveMessage,1);
 				    }
 				    else {
 				    	break;
@@ -113,12 +112,9 @@ public class ClientReducerThread implements Runnable {
 				  }
 				  //System.out.println("Out of while loop");  
 				  
-				  
-			
 	        } catch (IOException ex) {
 	            System.out.println("Problem in message reading");
 	        }
-	        
 	    }
 
 	}
