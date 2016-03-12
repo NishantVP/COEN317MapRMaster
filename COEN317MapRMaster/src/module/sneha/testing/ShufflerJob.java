@@ -55,7 +55,7 @@ public class ShufflerJob {
 			shufflerSortedOutput.append(listPair.get(i).getKey()+"="+listPair.get(i).getInteger()+",");
 		}
 		
-		System.out.println(shufflerSortedOutput.toString());
+		//System.out.println(shufflerSortedOutput.toString());
 	}
 
 	public static String getShufflerOutput(){
