@@ -77,6 +77,9 @@ public class NewConnectionListenerThread implements Runnable {
 		
 		//System.out.println("List Testing: " +allFileChunksList.get(0).getChunkFilePathName());
 		
+		for(int i=0; i<allFileChunksList.size(); i++) {
+			System.out.println("Path of all chunks: " +allFileChunksList.get(i).getChunkFilePathName());
+		}
 		
 		try {
 			saveServerIPToCloud();
@@ -136,14 +139,17 @@ public class NewConnectionListenerThread implements Runnable {
 			        }
 			        else {
 			        	  workerFunction = "map"; //decideMapperOrReducer();
+			        	 
+			        	  chunkNoToSend = processedFileChunksList.size();
+			        	  System.out.println("ChunkToMapper:" +chunkNoToSend);
+			        	 
 			        	  new ClientMapperThread(StoCPort,
 					        		allFileChunksList.get(chunkNoToSend),
 					        		allFileChunksList,
 					        		sentFileChunksList,
 					        		processedFileChunksList).start();
 					        
-					        
-					        chunkNoToSend++;
+					        //chunkNoToSend++;
 					        
 			        }
 			        

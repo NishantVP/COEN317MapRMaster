@@ -87,6 +87,7 @@ public class FileSelectorThread implements Runnable {
 		String line = null;
 		int chunkNumer = 0;
 		String chunkfileContent = "";
+		String chunkFileName ;
 		
 		FileReader fileReader = null;
 		BufferedReader bufferedReader = null;
@@ -101,7 +102,7 @@ public class FileSelectorThread implements Runnable {
 			
 			while((line = bufferedReader.readLine()) != null) {
 				countLines++;
-				chunkNumer = countLines/20;
+				chunkNumer = countLines/NUMBER_OF_LINES_PER_CHUNK;
 				
 				File theDir = new File(chunkPath);
             	// if the directory does not exist, create it
@@ -122,17 +123,20 @@ public class FileSelectorThread implements Runnable {
             	}
             	chunkfileContent = chunkfileContent +"\n"+ line;
             	
+            	
             	if(countLines%NUMBER_OF_LINES_PER_CHUNK == 0) {
             		
             		writeLineToFile(chunkfileContent,chunkPath,chunkNumer);
             		chunkfileContent = "";
             		//i++;
-            		String chunkFileName = chunkPath +chunkNumer +".txt";
+            		chunkFileName = chunkPath +chunkNumer +".txt";
             		//Add newly created chunk to the list
             		allFileChunksList.add(new Chunk(chunkFileName,chunkNumer));
             	}
 			}
 			writeLineToFile(chunkfileContent,chunkPath,chunkNumer);
+			chunkFileName = chunkPath +chunkNumer +".txt";
+			allFileChunksList.add(new Chunk(chunkFileName,chunkNumer));
             // Always close files.
             bufferedReader.close();     
 			

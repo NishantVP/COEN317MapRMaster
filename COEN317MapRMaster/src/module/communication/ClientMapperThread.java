@@ -126,8 +126,14 @@ public class ClientMapperThread implements Runnable {
 				  {
 				    if((receiveMessage = receiveRead.readLine()) != null)  
 				    {
-				       System.out.println("Map output from Mobile: " +receiveMessage);
-				       ShufflerJob.combineStreams(receiveMessage);
+				       if(!chunkMetaData.isProcessed()){
+				    	   ShufflerJob.combineStreams(receiveMessage);
+				    	   System.out.println("Map output from Mobile: " +receiveMessage);
+				       }
+				       else {
+				    	   System.out.println("Some other Mapper already processed this chunk");
+				       }
+				       
 				       addChunkToProcessedList();
 				    }
 				    else {
@@ -146,13 +152,12 @@ public class ClientMapperThread implements Runnable {
 	}
 	
 	private synchronized void addChunkToSentList() {
-		
+		chunkMetaData.setSent(true);
 		sentFileChunksList.add(chunkMetaData);
 		
 	}
-	
 	private synchronized void addChunkToProcessedList() {
-		
+		chunkMetaData.setProcessed(true);
 		processedFileChunksList.add(chunkMetaData);
 	}
 
